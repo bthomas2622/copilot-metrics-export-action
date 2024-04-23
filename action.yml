@@ -1,0 +1,33 @@
+name: 'GitHub Copilot Usage Metrics API Export'
+description: 'Export usage metrics from GitHub Copilot Usage Metrics API to a CSV file'
+inputs:
+  access-token:
+    description: 'GitHub token used to create an authenticated client'
+    required: true
+  enterprise-summary:
+    description: 'Export Copilot metrics for enterprise members'
+    default: 'false'
+    required: false
+  enterprise-name:
+    description: 'GitHub Enterprise name/slug'
+    default: ''
+    required: false
+  org-summary:
+    description: 'Export Copilot metrics for organization members'
+    default: 'false'
+    required: false
+  org-name:
+    description: 'GitHub Organization name/slug'
+    default: ''
+    required: false
+  team-summary:
+    description: 'Export Copilot metrics for team members'
+    default: 'false'
+    required: false
+  team-name:
+    description: 'GitHub Team name/slug'
+    default: ''
+    required: false
+runs:
+  using: 'node20'
+  main: 'index.js'
