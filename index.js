@@ -86,7 +86,6 @@ const run = async () => {
       const enterprise_csv = enterprisecsv(enterprise_response.data);
       writeFileSync('enterprise_copilot_usage_metrics.csv', enterprise_csv);
       await artifact.uploadArtifact('enterprise_copilot_usage_metrics', ['enterprise_copilot_usage_metrics.csv'], '.');
-      artifact.uploadArtifact('enterprise_copilot_usage_metrics', ['enterprise_copilot_usage_metrics.csv'], );
     }
 
     if (get_org_summary) {
