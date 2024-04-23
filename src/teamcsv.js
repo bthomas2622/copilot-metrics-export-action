@@ -6,7 +6,7 @@
  * @param {Array} data - The data to be converted into CSV.
  * @returns {string} The CSV string representation of the data.
  */
-const orgcsv = (data) => {
+const teamcsv = (data) => {
   let csv = 'day,total_suggestions_count,total_acceptances_count,total_lines_suggested,total_lines_accepted,total_active_users,total_chat_acceptances,total_chat_turns,total_active_chat_users,language,editor,suggestions_count,acceptances_count,lines_suggested,lines_accepted,active_users\n';
   data.forEach((row) => {
     row.breakdown.forEach((breakdown) => {
@@ -16,4 +16,4 @@ const orgcsv = (data) => {
   return csv;
 };
 
-export default orgcsv;
+export default teamcsv;
