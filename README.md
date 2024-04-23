@@ -36,11 +36,11 @@ The name of the team to generate a csv for. Required if `team-summary` is `true`
 ```yaml
 uses: bthomas2622/copilot-usage-metrics-api-export@v1
 with:
-  access-token: 'authorized-pat-here'
+  access-token: ${{ secrets.authorized-pat-here}}
   enterprise-summary: true
-  enterprise-name: 'octodemo'
+  enterprise-name: octodemo
   org-summary: true
-  org-name: 'octodemo'
+  org-name: octodemo
   team-summary: true
-  team-name: 'engineering'
+  team-name: engineering
 ```

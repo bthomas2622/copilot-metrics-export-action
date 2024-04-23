@@ -28,7 +28,7 @@ const run = async () => {
     let org_req;
     let team_req;
 
-    const get_enterprise_summary = inputs.enterprise_summary === 'true' ? true : false;
+    const get_enterprise_summary = inputs.enterprise_summary === 'true' || inputs.enterprise_summary === true ? true : false;
     if (get_enterprise_summary) {
       const enterprise_name = inputs.enterprise_name;
       if (enterprise_name === '') {
@@ -45,7 +45,7 @@ const run = async () => {
       }
     }
     
-    const get_org_summary = inputs.org_summary === 'true' ? true : false;
+    const get_org_summary = inputs.org_summary === 'true'|| inputs.org_summary === true ? true : false;
     if (get_org_summary) {
       const org_name = inputs.org_name;
       if (org_name === '') {
@@ -62,7 +62,7 @@ const run = async () => {
       }
     }
 
-    const get_team_summary = inputs.team_summary === 'true' ? true : false;
+    const get_team_summary = inputs.team_summary === 'true' || inputs.team_summary === true ? true : false;
     if (get_team_summary) {
       const team_name = inputs.team_name;
       if (team_name === '' || org_name === '') {
@@ -79,25 +79,27 @@ const run = async () => {
       }
     }
 
+    const artifact = new DefaultArtifactClient()
+
     if (get_enterprise_summary) {
       const enterprise_response = await enterprise_req;
       const enterprise_csv = enterprisecsv(enterprise_response.data);
       writeFileSync('enterprise_copilot_usage_metrics.csv', enterprise_csv);
-      await DefaultArtifactClient.uploadArtifact('enterprise_copilot_usage_metrics', ['enterprise_copilot_usage_metrics.csv']);
+      await artifact.uploadArtifact('enterprise_copilot_usage_metrics', ['enterprise_copilot_usage_metrics.csv']);
     }
 
     if (get_org_summary) {
       const org_response = await org_req;
       const org_csv = orgcsv(org_response.data);
       writeFileSync('org_copilot_usage_metrics.csv', org_csv);
-      await DefaultArtifactClient.uploadArtifact('org_copilot_usage_metrics', ['org_copilot_usage_metrics.csv']);
+      await artifact.uploadArtifact('org_copilot_usage_metrics', ['org_copilot_usage_metrics.csv']);
     }
 
     if (get_team_summary) {
       const team_response = await team_req;
       const team_csv = teamcsv(team_response.data);
       writeFileSync('team_copilot_usage_metrics.csv', team_csv);
-      await DefaultArtifactClient.uploadArtifact('team_copilot_usage_metrics', ['team_copilot_usage_metrics.csv']);
+      await artifact.uploadArtifact('team_copilot_usage_metrics', ['team_copilot_usage_metrics.csv']);
     }
   }
   catch (error) {
