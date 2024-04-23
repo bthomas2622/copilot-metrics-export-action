@@ -22,6 +22,10 @@ const getInputs = () => {
 const run = async () => {
   try {
     const inputs = getInputs();
+    const enterprise_name = inputs.enterprise_name;
+    const org_name = inputs.org_name;
+    const team_name = inputs.team_name;
+
     const octokit = getOctokit(inputs.access_token);
 
     let enterprise_req;
@@ -30,7 +34,6 @@ const run = async () => {
 
     const get_enterprise_summary = inputs.enterprise_summary === 'true' || inputs.enterprise_summary === true ? true : false;
     if (get_enterprise_summary) {
-      const enterprise_name = inputs.enterprise_name;
       if (enterprise_name === '') {
         setFailed("Enterprise Name is required to retreive Enterprise Copilot usage");
         return;
@@ -47,7 +50,6 @@ const run = async () => {
     
     const get_org_summary = inputs.org_summary === 'true'|| inputs.org_summary === true ? true : false;
     if (get_org_summary) {
-      const org_name = inputs.org_name;
       if (org_name === '') {
         setFailed("Organization Name is required to retreive Organization Copilot usage");
         return;
@@ -64,7 +66,6 @@ const run = async () => {
 
     const get_team_summary = inputs.team_summary === 'true' || inputs.team_summary === true ? true : false;
     if (get_team_summary) {
-      const team_name = inputs.team_name;
       if (team_name === '' || org_name === '') {
         setFailed("Both Organization and Team Name are required to retreive Team Copilot usage");
         return;
