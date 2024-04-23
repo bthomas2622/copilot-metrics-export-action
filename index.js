@@ -71,6 +71,7 @@ const run = async () => {
       }
       else {
         team_req = octokit.request('GET /orgs/{org}/team/{team}/copilot/usage', {
+          org: org_name,
           team: team_name,
           headers: {
             'X-GitHub-Api-Version': '2022-11-28'
