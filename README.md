@@ -1,5 +1,5 @@
 # GitHub Copilot Usage Metrics API Export
-This action exports usage metrics from the [GitHub Copilot Usage Metrics API](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28) to a CSV file.
+This action exports usage metrics from the [GitHub Copilot Usage Metrics API](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28) into a CSV file.
 
 ## Inputs
 
@@ -31,7 +31,15 @@ The name of the organization to generate a csv for. Required if `org-summary` is
 
 The name of the team to generate a csv for. Required if `team-summary` is `true`. Example: `engineering` for `https://github.com/orgs/octodemo/teams/engineering`.
 
-## Example usage
+## Example usages
+
+```yaml
+uses: bthomas2622/copilot-usage-metrics-api-export@v1
+with:
+  access-token: ${{ secrets.authorized-pat-here}}
+  org-summary: true
+  org-name: octodemo
+```
 
 ```yaml
 uses: bthomas2622/copilot-usage-metrics-api-export@v1
