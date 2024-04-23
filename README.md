@@ -1,5 +1,5 @@
 # GitHub Copilot Usage Metrics API Export
-This action exports usage metrics from the [GitHub Copilot Usage Metrics API](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28) into a CSV file.
+This action exports usage metrics from the [GitHub Copilot Usage Metrics API](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28) into a CSV file. The files are [available as workflow artifacts in the GitHub Action run](https://docs.github.com/en/enterprise-cloud@latest/actions/managing-workflow-runs/downloading-workflow-artifacts). 
 
 ## Inputs
 
