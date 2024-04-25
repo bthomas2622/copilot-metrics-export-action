@@ -18,7 +18,7 @@ inputs:
     required: false
   org-name:
     description: 'GitHub Organization name/slug'
-    default: ''
+    default: ${{ github.repository_owner }}
     required: false
   team-summary:
     description: 'Export Copilot metrics for team members'

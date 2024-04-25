@@ -3,6 +3,16 @@ This action exports usage metrics from the [GitHub Copilot Usage Metrics API](ht
 
 ## Inputs
 
+| Input              | Description                                                                                                                             | Required | Default |
+|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------|----------|---------|
+| `access-token`     | The access token to use for authenticating with the GitHub API. See the eligible access token types and required permissions in the [GitHub Copilot Usage Metrics API documentation](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28).                                                                         | Yes | - |
+| `enterprise-summary` | `true` or `false` on whether to generate a csv for [Copilot usage for enterprise members](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28#get-a-summary-of-copilot-usage-for-enterprise-members). | No | `false` |
+| `enterprise-name`  | The name/slug of the enterprise to generate a csv for. Example: `myent` for `https://github.com/enterprises/myent`. | If `enterprise-summary` is `true` | - |
+| `org-summary`      | `true` or `false` on whether to generate a csv for [Copilot usage for organization members](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28#get-a-summary-of-copilot-usage-for-organization-members). | No | `false` |
+| `org-name`         | The name of the organization to generate a csv for. Example: `myorg` for `https://github.com/myorg`. | No | Name of organization that action is running in. |
+| `team-summary`     | `true` or `false` on whether to generate a csv for [Copilot usage for a team](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28#get-a-summary-of-copilot-usage-for-a-team). | No | `false` |
+| `team-name`        | The name of the team to generate a csv for. Example: `engineering` for `https://github.com/orgs/octodemo/teams/engineering`. | If `team-summary` is `true` | - |
+
 ### `access-token`
 
 **REQUIRED**: The access token to use for authenticating with the GitHub API. See the eligible access token types and required permissions in the [GitHub Copilot Usage Metrics API documentation](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28).
@@ -13,7 +23,7 @@ This action exports usage metrics from the [GitHub Copilot Usage Metrics API](ht
 
 ### `enterprise-name`
 
-The name/slug of the enterprise to generate a csv for. Required if `enterprise-summary` is `true`. Example: `octodemo` for `https://github.com/enterprises/octodemo`.
+The name/slug of the enterprise to generate a csv for. Required if `enterprise-summary` is `true`. Example: `myent` for `https://github.com/enterprises/myent`.
 
 ### `org-summary`
 
@@ -21,7 +31,7 @@ The name/slug of the enterprise to generate a csv for. Required if `enterprise-s
 
 ### `org-name`
 
-The name of the organization to generate a csv for. Required if `org-summary` is `true`. Example: `octodemo` for `https://github.com/octodemo`.
+The name of the organization to generate a csv for. Required if `org-summary` is `true`. Example: `myorg` for `https://github.com/myorg`.
 
 ### `team-summary`
 
@@ -47,7 +57,7 @@ jobs:
     name: Copilot Usage Metrics Export Action
     runs-on: ubuntu-latest
     steps:
-      - uses: bthomas2622/copilot-metrics-export-action@v1
+      - uses: bthomas2622/copilot-metrics-export-action@v1.1
         with:
           access-token: ${{ secrets.authorized-pat-here}}
           org-summary: true
@@ -55,7 +65,7 @@ jobs:
 ```
 
 ```yaml
-uses: bthomas2622/copilot-metrics-export-action@v1
+uses: bthomas2622/copilot-metrics-export-action@v1.1
 with:
   access-token: ${{ secrets.authorized-pat-here}}
   enterprise-summary: true
