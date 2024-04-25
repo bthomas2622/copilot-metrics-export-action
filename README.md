@@ -13,34 +13,6 @@ This action exports usage metrics from the [GitHub Copilot Usage Metrics API](ht
 | `team-summary`     | `true` or `false` on whether to generate a csv for [Copilot usage for a team](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28#get-a-summary-of-copilot-usage-for-a-team). | No | `false` |
 | `team-name`        | The name of the team to generate a csv for. Example: `engineering` for `https://github.com/orgs/octodemo/teams/engineering`. | If `team-summary` is `true` | - |
 
-### `access-token`
-
-**REQUIRED**: The access token to use for authenticating with the GitHub API. See the eligible access token types and required permissions in the [GitHub Copilot Usage Metrics API documentation](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28).
-
-### `enterprise-summary`
-
-`true` or `false` on whether to generate a csv for [Copilot usage for enterprise members](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28#get-a-summary-of-copilot-usage-for-enterprise-members). Default is `false`.
-
-### `enterprise-name`
-
-The name/slug of the enterprise to generate a csv for. Required if `enterprise-summary` is `true`. Example: `myent` for `https://github.com/enterprises/myent`.
-
-### `org-summary`
-
-`true` or `false` on whether to generate a csv for [Copilot usage for organization members](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28#get-a-summary-of-copilot-usage-for-organization-members). Default is `false`.
-
-### `org-name`
-
-The name of the organization to generate a csv for. Required if `org-summary` is `true`. Example: `myorg` for `https://github.com/myorg`.
-
-### `team-summary`
-
-`true` or `false` on whether to generate a csv for [Copilot usage for a team](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28#get-a-summary-of-copilot-usage-for-a-team). Default is `false`.
-
-### `team-name`
-
-The name of the team to generate a csv for. Required if `team-summary` is `true`. Example: `engineering` for `https://github.com/orgs/octodemo/teams/engineering`.
-
 ## Usage
 
 In order to run this action you must create a GitHub Action workflow (`.github/workflows/copilot-api-export.yml`). See [Creating a Workflow file](https://help.github.com/en/articles/configuring-a-workflow#creating-a-workflow-file).
