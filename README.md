@@ -47,7 +47,7 @@ jobs:
     name: Copilot Usage Metrics Export Action
     runs-on: ubuntu-latest
     steps:
-      - uses: bthomas2622/copilot-usage-metrics-api-export@v1
+      - uses: bthomas2622/copilot-metrics-export-action@v1
         with:
           access-token: ${{ secrets.authorized-pat-here}}
           org-summary: true
@@ -55,7 +55,7 @@ jobs:
 ```
 
 ```yaml
-uses: bthomas2622/copilot-usage-metrics-api-export@v1
+uses: bthomas2622/copilot-metrics-export-action@v1
 with:
   access-token: ${{ secrets.authorized-pat-here}}
   enterprise-summary: true
