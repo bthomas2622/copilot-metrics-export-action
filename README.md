@@ -11,7 +11,7 @@ This action exports usage metrics from the [GitHub Copilot Usage Metrics API](ht
 | `org-summary`      | `true` or `false` on whether to generate a csv for [Copilot usage for organization members](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28#get-a-summary-of-copilot-usage-for-organization-members). | No | `false` |
 | `org-name`         | The name of the organization to generate a csv for. Example: `myorg` for `https://github.com/myorg`. | No | Name of organization that action is running in. |
 | `team-summary`     | `true` or `false` on whether to generate a csv for [Copilot usage for a team](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28#get-a-summary-of-copilot-usage-for-a-team). | No | `false` |
-| `team-name`        | The name of the team to generate a csv for. Example: `engineering` for `https://github.com/orgs/octodemo/teams/engineering`. | If `team-summary` is `true` | - |
+| `team-name`        | The name of the team to generate a csv for. Example: `engineering` for `https://github.com/orgs/myorg/teams/engineering`. | If `team-summary` is `true` | - |
 
 ## Usage
 
