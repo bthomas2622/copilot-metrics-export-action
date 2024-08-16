@@ -5,12 +5,15 @@ import { writeFileSync } from 'fs';
 import enterprisecsv from './src/enterprisecsv';
 import orgcsv from './src/orgcsv';
 import teamcsv from './src/teamcsv';
+import enterpriseteamcsv from './src/enterpriseteamcsv';
 
 const getInputs = () => {
   const inputs = {
     access_token: getInput('access-token'),
     enterprise_summary: getInput('enterprise-summary'),
     enterprise_name: getInput('enterprise-name'),
+    enterprise_team_summary: getInput('enterprise-team-summary'),
+    enterprise_team_name: getInput('enterprise-team-name'),
     org_summary: getInput('org-summary'),
     org_name: getInput('org-name'),
     team_summary: getInput('team-summary'),
@@ -25,12 +28,14 @@ const run = async () => {
     const enterprise_name = inputs.enterprise_name;
     const org_name = inputs.org_name;
     const team_name = inputs.team_name;
+    const enterprise_team_name = inputs.enterprise_team_name;
 
     const octokit = getOctokit(inputs.access_token);
 
     let enterprise_req;
     let org_req;
     let team_req;
+    let enterprise_team_req;
 
     const get_enterprise_summary = inputs.enterprise_summary === 'true' || inputs.enterprise_summary === true ? true : false;
     if (get_enterprise_summary) {
@@ -81,6 +86,23 @@ const run = async () => {
       }
     }
 
+    const get_enterprise_team_summary = inputs.enterprise_team_summary === 'true' || inputs.enterprise_team_summary === true ? true : false;
+    if (get_enterprise_team_summary) {
+      if (enterprise_team_name === '' || enterprise_name === '') {
+        setFailed("Both Enterprise and Enterprise Team Name are required to retreive Enterprise Team Copilot usage");
+        return;
+      }
+      else {
+        enterprise_team_req = octokit.request('GET /enterprises/{enterprise}/team/{team}/copilot/usage', {
+          enterprise: enterprise_name,
+          team: team_name,
+          headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        })
+      }
+    }
+
     const artifact = new DefaultArtifactClient()
 
     if (get_enterprise_summary) {
@@ -103,6 +125,14 @@ const run = async () => {
       writeFileSync('team_copilot_usage_metrics.csv', team_csv);
       await artifact.uploadArtifact('team_copilot_usage_metrics', ['team_copilot_usage_metrics.csv'], '.');
     }
+
+    if (get_enterprise_team_summary) {
+      const enterprise_team_response = await enterprise_team_req;
+      const enterprise_team_csv = enterpriseteamcsv(enterprise_team_response.data);
+      writeFileSync('enterprise_team_copilot_usage_metrics.csv', enterprise_team_csv);
+      await artifact.uploadArtifact('enterprise_team_copilot_usage_metrics', ['enterprise_team_copilot_usage_metrics.csv'], '.');
+    }
+
   }
   catch (error) {
     setFailed(error.message);

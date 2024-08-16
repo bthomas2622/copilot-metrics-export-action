@@ -8,6 +8,8 @@ This action exports usage metrics from the [GitHub Copilot Usage Metrics API](ht
 | `access-token`     | The access token to use for authenticating with the GitHub API. See the eligible access token types and required permissions in the [GitHub Copilot Usage Metrics API documentation](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28).                                                                         | Yes | - |
 | `enterprise-summary` | `true` or `false` on whether to generate a csv for [Copilot usage for enterprise members](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28#get-a-summary-of-copilot-usage-for-enterprise-members). | No | `false` |
 | `enterprise-name`  | The name/slug of the enterprise to generate a csv for. Example: `myent` for `https://github.com/enterprises/myent`. | If `enterprise-summary` is `true` | - |
+| `enterprise-team-summary`     | `true` or `false` on whether to generate a csv for [Copilot usage for an enterprise team](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28#get-a-summary-of-copilot-usage-for-an-enterprise-team). | No | `false` |
+| `enterprise-team-name`        | The name of the enterprise team to generate a csv for. Example: `engineering` for `https://github.com/orgs/myorg/teams/engineering`. | If `enterprise-team-summary` is `true` | - |
 | `org-summary`      | `true` or `false` on whether to generate a csv for [Copilot usage for organization members](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28#get-a-summary-of-copilot-usage-for-organization-members). | No | `false` |
 | `org-name`         | The name of the organization to generate a csv for. Example: `myorg` for `https://github.com/myorg`. | No | Name of organization that action is running in. |
 | `team-summary`     | `true` or `false` on whether to generate a csv for [Copilot usage for a team](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28#get-a-summary-of-copilot-usage-for-a-team). | No | `false` |
@@ -46,6 +48,16 @@ with:
   org-name: myorg
   team-summary: true
   team-name: engineering
+```
+
+```yaml
+uses: bthomas2622/copilot-metrics-export-action@v1.1
+with:
+  access-token: ${{ secrets.authorized-pat-here}}
+  enterprise-summary: true
+  enterprise-name: myenterprise
+  enterprise-team-summary: true
+  enterprise-team-name: engineering
 ```
 
 ## Creating an Access Token
