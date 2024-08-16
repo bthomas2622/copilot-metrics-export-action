@@ -1,4 +1,4 @@
-import { getInput, setFailed } from '@actions/core';
+import { getInput, setFailed, info } from '@actions/core';
 import { getOctokit } from '@actions/github';
 import { DefaultArtifactClient } from '@actions/artifact';
 import { writeFileSync } from 'fs';
@@ -22,6 +22,23 @@ const getInputs = () => {
   return inputs;
 }
 
+// https://docs.github.com/en/enterprise-cloud@latest/early-access/admin/articles/rest-api-endpoints-for-enterprise-teams#list-enterprise-teams
+const fetchEnterpriseTeams = async (enterprise_name) => {
+  try {
+    const response = await octokit.paginate('GET /enterprises/{enterprise}/teams', {
+      enterprise: enterprise_name,
+      headers: {
+        'X-GitHub-Api-Version': '2022-11-28'
+      }
+    });
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error('Failed to fetch enterprise teams:', error);
+    throw error;
+  }
+};
+
 const run = async () => {
   try {
     const inputs = getInputs();
@@ -36,6 +53,8 @@ const run = async () => {
     let org_req;
     let team_req;
     let enterprise_team_req;
+    let enterprise_teams;
+    let allEnterpriseTeamData = [];
 
     const get_enterprise_summary = inputs.enterprise_summary === 'true' || inputs.enterprise_summary === true ? true : false;
     if (get_enterprise_summary) {
@@ -44,7 +63,7 @@ const run = async () => {
         return;
       }
       else {
-        enterprise_req = octokit.request('GET /enterprises/{enterprise}/copilot/usage', {
+        enterprise_req = octokit.paginate('GET /enterprises/{enterprise}/copilot/usage', {
           enterprise: enterprise_name,
           headers: {
             'X-GitHub-Api-Version': '2022-11-28'
@@ -60,7 +79,7 @@ const run = async () => {
         return;
       }
       else {
-        org_req = octokit.request('GET /orgs/{org}/copilot/usage', {
+        org_req = octokit.paginate('GET /orgs/{org}/copilot/usage', {
           org: org_name,
           headers: {
             'X-GitHub-Api-Version': '2022-11-28'
@@ -76,7 +95,7 @@ const run = async () => {
         return;
       }
       else {
-        team_req = octokit.request('GET /orgs/{org}/team/{team}/copilot/usage', {
+        team_req = octokit.paginate('GET /orgs/{org}/team/{team}/copilot/usage', {
           org: org_name,
           team: team_name,
           headers: {
@@ -93,13 +112,28 @@ const run = async () => {
         return;
       }
       else {
-        enterprise_team_req = octokit.request('GET /enterprises/{enterprise}/team/{enterprise_team}/copilot/usage', {
-          enterprise: enterprise_name,
-          enterprise_team: enterprise_team_name,
-          headers: {
-            'X-GitHub-Api-Version': '2022-11-28'
-          }
-        })
+        // If all teams requested, call the API to get a list of all teams
+        if (enterprise_team_name.includes('all') || enterprise_team_name.includes('*')) {
+          const enterprise_teams_data = await fetchEnterpriseTeams(enterprise_name); // Fetch all teams from the API
+          enterprise_teams = enterprise_teams_data.map(team => team.name);
+        } else {
+          enterprise_teams = [enterprise_team_name];
+        }
+        enterprise_teams.sort();
+
+        // Log the list of enterprise teams to the actions log
+        info(`Enterprise teams: ${enterprise_teams.join(', ')}`);
+        
+        for (const team of enterprise_teams) {
+          const enterprise_team_req = await octokit.paginate('GET /enterprises/{enterprise}/team/{enterprise_team}/copilot/usage', {
+            enterprise: enterprise_name,
+            enterprise_team: team,
+            headers: {
+              'X-GitHub-Api-Version': '2022-11-28'
+            }
+          });
+          allEnterpriseTeamData.push({ team, data: enterprise_team_req.data });
+        }
       }
     }
 
@@ -127,8 +161,9 @@ const run = async () => {
     }
 
     if (get_enterprise_team_summary) {
-      const enterprise_team_response = await enterprise_team_req;
-      const enterprise_team_csv = enterpriseteamcsv(enterprise_team_response.data);
+      //const enterprise_team_response = await enterprise_team_req;
+      //const enterprise_team_csv = enterpriseteamcsv(enterprise_team_response.data);
+      const enterprise_team_csv = enterpriseteamcsv(allEnterpriseTeamData);
       writeFileSync('enterprise_team_copilot_usage_metrics.csv', enterprise_team_csv);
       await artifact.uploadArtifact('enterprise_team_copilot_usage_metrics', ['enterprise_team_copilot_usage_metrics.csv'], '.');
     }
