@@ -31,12 +31,12 @@ const fetchEnterpriseTeams = async (octokit, enterprise_name) => {
         'X-GitHub-Api-Version': '2022-11-28'
       }
     });
-    if (!response || !response.data) {
+    if (!response || response.length === 0) {
       console.error('No data received from fetchEnterpriseTeams. Response:', response);
-      throw new Error('No data received from fetchEnterpriseTeams');
+      throw new Error('No data received from fetchEnterpriseTeams.  Ensure you have enterprise teams defined or disable the enterprise_team_summary input.');
     }
-    const data = response.data;
-    return data;
+
+    return response;
   } catch (error) {
     console.error('Failed to fetch enterprise teams:', error);
     throw error;
