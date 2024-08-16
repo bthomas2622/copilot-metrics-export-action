@@ -31,6 +31,10 @@ const fetchEnterpriseTeams = async (octokit, enterprise_name) => {
         'X-GitHub-Api-Version': '2022-11-28'
       }
     });
+    if (!response || !response.data) {
+      console.error('No data received from fetchEnterpriseTeams. Response:', response);
+      throw new Error('No data received from fetchEnterpriseTeams');
+    }
     const data = response.data;
     return data;
   } catch (error) {
@@ -115,6 +119,10 @@ const run = async () => {
         // If all teams requested, call the API to get a list of all teams
         if (enterprise_team_name.includes('all') || enterprise_team_name.includes('*')) {
           const enterprise_teams_data = await fetchEnterpriseTeams(octokit, enterprise_name); // Fetch all teams from the API
+          if (!enterprise_teams_data) {
+            setFailed("Failed to fetch enterprise teams data");
+            return;
+          }
           const enterprise_teams = enterprise_teams_data.map(team => team.name);
           enterprise_teams.sort();
 
