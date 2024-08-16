@@ -93,9 +93,9 @@ const run = async () => {
         return;
       }
       else {
-        enterprise_team_req = octokit.request('GET /enterprises/{enterprise}/team/{team}/copilot/usage', {
+        enterprise_team_req = octokit.request('GET /enterprises/{enterprise}/team/{enterprise_team}/copilot/usage', {
           enterprise: enterprise_name,
-          team: team_name,
+          enterprise_team: enterprise_team_name,
           headers: {
             'X-GitHub-Api-Version': '2022-11-28'
           }
