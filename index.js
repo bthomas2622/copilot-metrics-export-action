@@ -148,21 +148,21 @@ const run = async () => {
 
     if (get_enterprise_summary) {
       const enterprise_response = await enterprise_req;
-      const enterprise_csv = enterprisecsv(enterprise_response.data);
+      const enterprise_csv = enterprisecsv(enterprise_response);
       writeFileSync('enterprise_copilot_usage_metrics.csv', enterprise_csv);
       await artifact.uploadArtifact('enterprise_copilot_usage_metrics', ['enterprise_copilot_usage_metrics.csv'], '.');
     }
 
     if (get_org_summary) {
       const org_response = await org_req;
-      const org_csv = orgcsv(org_response.data);
+      const org_csv = orgcsv(org_response);
       writeFileSync('org_copilot_usage_metrics.csv', org_csv);
       await artifact.uploadArtifact('org_copilot_usage_metrics', ['org_copilot_usage_metrics.csv'], '.' );
     }
 
     if (get_team_summary) {
       const team_response = await team_req;
-      const team_csv = teamcsv(team_response.data);
+      const team_csv = teamcsv(team_response);
       writeFileSync('team_copilot_usage_metrics.csv', team_csv);
       await artifact.uploadArtifact('team_copilot_usage_metrics', ['team_copilot_usage_metrics.csv'], '.');
     }
