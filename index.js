@@ -123,23 +123,25 @@ const run = async () => {
             setFailed("Failed to fetch enterprise teams data");
             return;
           }
+
+          // Sort the list of enterprise teams
+          enterprise_teams_data.sort((a, b) => a.name.localeCompare(b.name));
           const enterprise_teams = enterprise_teams_data.map(team => team.name);
-          enterprise_teams.sort();
 
           // Log the list of enterprise teams to the actions log
           info(`Enterprise teams: ${enterprise_teams.join(', ')}`);
 
-          for (const team of enterprise_teams) {
-            const encodedTeam = encodeURIComponent(team);
+          for (const team of enterprise_teams_data) {
+            const { name, slug } = team;
             try {
               const enterprise_team_req = await octokit.paginate('GET /enterprises/{enterprise}/team/{enterprise_team}/copilot/usage', {
                 enterprise: enterprise_name,
-                enterprise_team: encodedTeam,
+                enterprise_team: slug,
                 headers: {
                   'X-GitHub-Api-Version': '2022-11-28'
                 }
               });
-              allEnterpriseTeamData.push({ team, data: enterprise_team_req });
+              allEnterpriseTeamData.push({ team: name, data: enterprise_team_req });
             } catch (error) {
               console.error(`Failed to fetch data for team ${team}:`, error);
             }
