@@ -130,14 +130,19 @@ const run = async () => {
           info(`Enterprise teams: ${enterprise_teams.join(', ')}`);
 
           for (const team of enterprise_teams) {
-            const enterprise_team_req = await octokit.paginate('GET /enterprises/{enterprise}/team/{enterprise_team}/copilot/usage', {
-              enterprise: enterprise_name,
-              enterprise_team: team,
-              headers: {
-                'X-GitHub-Api-Version': '2022-11-28'
-              }
-            });
-            allEnterpriseTeamData.push({ team, data: enterprise_team_req });
+            const encodedTeam = encodeURIComponent(team);
+            try {
+              const enterprise_team_req = await octokit.paginate('GET /enterprises/{enterprise}/team/{enterprise_team}/copilot/usage', {
+                enterprise: enterprise_name,
+                enterprise_team: encodedTeam,
+                headers: {
+                  'X-GitHub-Api-Version': '2022-11-28'
+                }
+              });
+              allEnterpriseTeamData.push({ team, data: enterprise_team_req });
+            } catch (error) {
+              console.error(`Failed to fetch data for team ${team}:`, error);
+            }
           }
         } else {
           const enterprise_team_req = await octokit.paginate('GET /enterprises/{enterprise}/team/{enterprise_team}/copilot/usage', {
