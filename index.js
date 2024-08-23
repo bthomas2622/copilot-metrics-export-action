@@ -38,7 +38,11 @@ const fetchEnterpriseTeams = async (octokit, enterprise_name) => {
 
     return response;
   } catch (error) {
-    console.error('Failed to fetch enterprise teams:', error);
+    if (error.status === 404) {
+      console.error('List enterprise teams URL not found.  Ensure you are using an enterprise that supports enterprise teams', error);
+    } else {
+      console.error('Failed to fetch enterprise teams:', error);
+    }
     throw error;
   }
 };
