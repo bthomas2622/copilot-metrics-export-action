@@ -32,7 +32,7 @@ jobs:
     name: Copilot Usage Metrics Export Action
     runs-on: ubuntu-latest
     steps:
-      - uses: bthomas2622/copilot-metrics-export-action@v1.1
+      - uses: bthomas2622/copilot-metrics-export-action@v1.2
         with:
           access-token: ${{ secrets.authorized-pat-here}}
           org-summary: true
@@ -41,7 +41,7 @@ jobs:
 
 Generate a CSV for Copilot usage for an organzation and its team:
 ```yaml
-uses: bthomas2622/copilot-metrics-export-action@v1.1
+uses: bthomas2622/copilot-metrics-export-action@v1.2
 with:
   access-token: ${{ secrets.authorized-pat-here}}
   enterprise-summary: true
@@ -54,7 +54,7 @@ with:
 
 Generate a CSV for Copilot usage for an enterprise and its enterprise team:
 ```yaml
-uses: bthomas2622/copilot-metrics-export-action@v1.1
+uses: bthomas2622/copilot-metrics-export-action@v1.2
 with:
   access-token: ${{ secrets.authorized-pat-here}}
   enterprise-summary: true
@@ -65,7 +65,7 @@ with:
 
 Generate a CSV for Copilot usage for an enterprise and all enterprise team:
 ```yaml
-uses: bthomas2622/copilot-metrics-export-action@v1.1
+uses: bthomas2622/copilot-metrics-export-action@v1.2
 with:
   access-token: ${{ secrets.authorized-pat-here}}
   enterprise-summary: true
