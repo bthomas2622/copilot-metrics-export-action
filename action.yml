@@ -12,6 +12,14 @@ inputs:
     description: 'GitHub Enterprise name/slug'
     default: ''
     required: false
+  enterprise-team-summary:
+    description: 'Export Copilot metrics for enterprise team members'
+    default: 'false'
+    required: false
+  enterprise-team-name:
+    description: 'GitHub Enterprise Team name/slug'
+    default: ''
+    required: false
   org-summary:
     description: 'Export Copilot metrics for organization members'
     default: 'false'
@@ -21,11 +29,11 @@ inputs:
     default: ${{ github.repository_owner }}
     required: false
   team-summary:
-    description: 'Export Copilot metrics for team members'
+    description: 'Export Copilot metrics for organization team members'
     default: 'false'
     required: false
   team-name:
-    description: 'GitHub Team name/slug'
+    description: 'GitHub organization Team name/slug'
     default: ''
     required: false
 runs:
