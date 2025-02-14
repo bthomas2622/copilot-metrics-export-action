@@ -1,6 +1,6 @@
 # Contributing to Copilot Usage Metrics Export CSV Action
 
-First off, thank you for considering contributing to Copilot Usage Metrics Export CSV Action.
+First off, thank you for considering contributing to Copilot Metrics Export CSV Action.
 
 ## How Can I Contribute?
 

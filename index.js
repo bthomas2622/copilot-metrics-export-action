@@ -60,18 +60,16 @@ const run = async () => {
     let enterprise_req;
     let org_req;
     let team_req;
-    let enterprise_team_req;
-    let enterprise_teams;
     let allEnterpriseTeamData = [];
 
     const get_enterprise_summary = inputs.enterprise_summary === 'true' || inputs.enterprise_summary === true ? true : false;
     if (get_enterprise_summary) {
       if (enterprise_name === '') {
-        setFailed("Enterprise Name is required to retreive Enterprise Copilot usage");
+        setFailed("Enterprise Name is required to retrieve Enterprise Copilot metrics");
         return;
       }
       else {
-        enterprise_req = octokit.paginate('GET /enterprises/{enterprise}/copilot/usage', {
+        enterprise_req = octokit.paginate('GET /enterprises/{enterprise}/copilot/metrics', {
           enterprise: enterprise_name,
           headers: {
             'X-GitHub-Api-Version': '2022-11-28'
@@ -83,11 +81,11 @@ const run = async () => {
     const get_org_summary = inputs.org_summary === 'true'|| inputs.org_summary === true ? true : false;
     if (get_org_summary) {
       if (org_name === '') {
-        setFailed("Organization Name is required to retreive Organization Copilot usage");
+        setFailed("Organization Name is required to retrieve Organization Copilot metrics");
         return;
       }
       else {
-        org_req = octokit.paginate('GET /orgs/{org}/copilot/usage', {
+        org_req = octokit.paginate('GET /orgs/{org}/copilot/metrics', {
           org: org_name,
           headers: {
             'X-GitHub-Api-Version': '2022-11-28'
@@ -99,11 +97,11 @@ const run = async () => {
     const get_team_summary = inputs.team_summary === 'true' || inputs.team_summary === true ? true : false;
     if (get_team_summary) {
       if (team_name === '' || org_name === '') {
-        setFailed("Both Organization and Team Name are required to retreive Team Copilot usage");
+        setFailed("Both Organization and Team Name are required to retrieve Team Copilot metrics");
         return;
       }
       else {
-        team_req = octokit.paginate('GET /orgs/{org}/team/{team}/copilot/usage', {
+        team_req = octokit.paginate('GET /orgs/{org}/team/{team}/copilot/metrics', {
           org: org_name,
           team: team_name,
           headers: {
@@ -116,7 +114,7 @@ const run = async () => {
     const get_enterprise_team_summary = inputs.enterprise_team_summary === 'true' || inputs.enterprise_team_summary === true ? true : false;
     if (get_enterprise_team_summary) {
       if (enterprise_team_name === '' || enterprise_name === '') {
-        setFailed("Both Enterprise and Enterprise Team Name are required to retreive Enterprise Team Copilot usage");
+        setFailed("Both Enterprise and Enterprise Team Name are required to retrieve Enterprise Team Copilot metrics");
         return;
       }
       else {
@@ -138,7 +136,7 @@ const run = async () => {
           for (const team of enterprise_teams_data) {
             const { name, slug } = team;
             try {
-              const enterprise_team_req = await octokit.paginate('GET /enterprises/{enterprise}/team/{enterprise_team}/copilot/usage', {
+              const enterprise_team_req = await octokit.paginate('GET /enterprises/{enterprise}/team/{enterprise_team}/copilot/metrics', {
                 enterprise: enterprise_name,
                 enterprise_team: slug,
                 headers: {
@@ -151,7 +149,7 @@ const run = async () => {
             }
           }
         } else {
-          const enterprise_team_req = await octokit.paginate('GET /enterprises/{enterprise}/team/{enterprise_team}/copilot/usage', {
+          const enterprise_team_req = await octokit.paginate('GET /enterprises/{enterprise}/team/{enterprise_team}/copilot/metrics', {
             enterprise: enterprise_name,
             enterprise_team: enterprise_team_name,
             headers: {
@@ -168,28 +166,28 @@ const run = async () => {
     if (get_enterprise_summary) {
       const enterprise_response = await enterprise_req;
       const enterprise_csv = enterprisecsv(enterprise_response);
-      writeFileSync('enterprise_copilot_usage_metrics.csv', enterprise_csv);
-      await artifact.uploadArtifact('enterprise_copilot_usage_metrics', ['enterprise_copilot_usage_metrics.csv'], '.');
+      writeFileSync('enterprise_copilot_metrics.csv', enterprise_csv);
+      await artifact.uploadArtifact('enterprise_copilot_metrics', ['enterprise_copilot_metrics.csv'], '.');
     }
 
     if (get_org_summary) {
       const org_response = await org_req;
       const org_csv = orgcsv(org_response);
-      writeFileSync('org_copilot_usage_metrics.csv', org_csv);
-      await artifact.uploadArtifact('org_copilot_usage_metrics', ['org_copilot_usage_metrics.csv'], '.' );
+      writeFileSync('org_copilot_metrics.csv', org_csv);
+      await artifact.uploadArtifact('org_copilot_metrics', ['org_copilot_metrics.csv'], '.' );
     }
 
     if (get_team_summary) {
       const team_response = await team_req;
       const team_csv = teamcsv(team_response);
-      writeFileSync('team_copilot_usage_metrics.csv', team_csv);
-      await artifact.uploadArtifact('team_copilot_usage_metrics', ['team_copilot_usage_metrics.csv'], '.');
+      writeFileSync('team_copilot_metrics.csv', team_csv);
+      await artifact.uploadArtifact('team_copilot_metrics', ['team_copilot_metrics.csv'], '.');
     }
 
     if (get_enterprise_team_summary) {
       const enterprise_team_csv = enterpriseteamcsv(allEnterpriseTeamData);
-      writeFileSync('enterprise_team_copilot_usage_metrics.csv', enterprise_team_csv);
-      await artifact.uploadArtifact('enterprise_team_copilot_usage_metrics', ['enterprise_team_copilot_usage_metrics.csv'], '.');
+      writeFileSync('enterprise_team_copilot_metrics.csv', enterprise_team_csv);
+      await artifact.uploadArtifact('enterprise_team_copilot_metrics', ['enterprise_team_copilot_metrics.csv'], '.');
     }
 
   }

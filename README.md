@@ -1,11 +1,11 @@
-# GitHub Copilot Usage Metrics API Export
-This action exports usage metrics from the [GitHub Copilot Usage Metrics API](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28) into a CSV file. The files are [available as workflow artifacts in the GitHub Action run](https://docs.github.com/en/enterprise-cloud@latest/actions/managing-workflow-runs/downloading-workflow-artifacts). 
+# GitHub Copilot Metrics API Export
+This action exports usage metrics from the [GitHub Copilot Metrics API](https://docs.github.com/en/enterprise-cloud@latest/rest/copilot/copilot-metrics?apiVersion=2022-11-28) into a CSV file. The files are [available as workflow artifacts in the GitHub Action run](https://docs.github.com/en/enterprise-cloud@latest/actions/managing-workflow-runs/downloading-workflow-artifacts). 
 
 ## Inputs
 
 | Input              | Description                                                                                                                             | Required | Default |
 |--------------------|-----------------------------------------------------------------------------------------------------------------------------------------|----------|---------|
-| `access-token`     | The access token to use for authenticating with the GitHub API. See the eligible access token types and required permissions in the [GitHub Copilot Usage Metrics API documentation](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28).                                                                         | Yes | - |
+| `access-token`     | The access token to use for authenticating with the GitHub API. See the eligible access token types and required permissions in the [GitHub Copilot Metrics API documentation](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28).                                                                         | Yes | - |
 | `enterprise-summary` | `true` or `false` on whether to generate a csv for [Copilot usage for enterprise members](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28#get-a-summary-of-copilot-usage-for-enterprise-members). | No | `false` |
 | `enterprise-name`  | The name/slug of the enterprise to generate a csv for. Example: `myent` for `https://github.com/enterprises/myent`. | If `enterprise-summary` is `true` | - |
 | `enterprise-team-summary`     | `true` or `false` on whether to generate a csv for [Copilot usage for an enterprise team](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28#get-a-summary-of-copilot-usage-for-an-enterprise-team). | No | `false` |
@@ -23,25 +23,25 @@ In order to run this action you must create a GitHub Action workflow (`.github/w
 
 Generate a CSV for Copilot usage for organization members:
 ```yaml
-name: Copilot Usage Metrics Export
+name: Copilot Metrics Export
 on:
   workflow_dispatch:
 
 jobs:
   run:
-    name: Copilot Usage Metrics Export Action
+    name: Copilot Metrics Export Action
     runs-on: ubuntu-latest
     steps:
-      - uses: bthomas2622/copilot-metrics-export-action@v1.2
+      - uses: bthomas2622/copilot-metrics-export-action@v1.3
         with:
           access-token: ${{ secrets.authorized-pat-here}}
           org-summary: true
           org-name: myorg
 ```
 
-Generate a CSV for Copilot usage for an organzation and its team:
+Generate a CSV for Copilot metrics for an organzation and its team:
 ```yaml
-uses: bthomas2622/copilot-metrics-export-action@v1.2
+uses: bthomas2622/copilot-metrics-export-action@v1.3
 with:
   access-token: ${{ secrets.authorized-pat-here}}
   enterprise-summary: true
@@ -52,7 +52,7 @@ with:
   team-name: engineering
 ```
 
-Generate a CSV for Copilot usage for an enterprise and its enterprise team:
+Generate a CSV for Copilot metrics for an enterprise and its enterprise team:
 ```yaml
 uses: bthomas2622/copilot-metrics-export-action@v1.2
 with:
@@ -63,7 +63,7 @@ with:
   enterprise-team-name: engineering
 ```
 
-Generate a CSV for Copilot usage for an enterprise and all enterprise team:
+Generate a CSV for Copilot metrics for an enterprise and all enterprise teams:
 ```yaml
 uses: bthomas2622/copilot-metrics-export-action@v1.2
 with:
@@ -76,11 +76,11 @@ with:
 
 ## Creating an Access Token
 
-See the eligible access token types and required permissions in the [GitHub Copilot Usage Metrics API documentation](https://docs.github.com/en/rest/copilot/copilot-usage?apiVersion=2022-11-28).
+See the eligible access token types and required permissions in the [GitHub Copilot Metrics API documentation](https://docs.github.com/en/enterprise-cloud@latest/rest/copilot/copilot-metrics?apiVersion=2022-11-28).
 
 ### Personal Access Tokens (Classic)
 
-If you choose to utilize [a Personal Access Token (PAT) (Classic)](https://github.com/settings/tokens/new?scopes=admin:org) it must possess `copilot`, `manage_billing:copilot`, `admin:org`, `admin:enterprise`, or `manage_billing:enterprise` scope to use the Copilot Usage Metrics API endpoint.
+If you choose to utilize [a Personal Access Token (PAT) (Classic)](https://github.com/settings/tokens/new?scopes=admin:org) it must possess `copilot`, `manage_billing:copilot`, `admin:org`, `admin:enterprise`, or `manage_billing:enterprise` scope to use the Copilot Metrics API endpoint.
 
 Add this PAT as a secret so it can be used as input for `access-token`, see [Creating encrypted secrets for a repository](https://docs.github.com/en/enterprise-cloud@latest/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository).
 

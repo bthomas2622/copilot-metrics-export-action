@@ -1,5 +1,5 @@
-name: 'GitHub Copilot Usage Metrics API Export'
-description: 'Export usage metrics from GitHub Copilot Usage Metrics API to a CSV file'
+name: 'GitHub Copilot Metrics API Export'
+description: 'Export metrics from GitHub Copilot Usage Metrics API to a CSV file'
 inputs:
   access-token:
     description: 'GitHub token used to create an authenticated client'
